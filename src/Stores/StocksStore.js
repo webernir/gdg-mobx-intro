@@ -1,7 +1,6 @@
 import { observable, computed, action, runInAction, reaction, toJS } from 'mobx'
 import remotedev from 'mobx-remotedev/lib/dev'
 import uuid from 'uuid/v4'
-import symbols from './symbols'
 
 @remotedev({
   filters: {

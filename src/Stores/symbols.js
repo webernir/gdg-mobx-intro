@@ -1,1 +1,0 @@
-export default ['AAPL', 'GOOG', 'MSFT', 'TEVA', 'EXTR', 'UPLD']
