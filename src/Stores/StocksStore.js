@@ -1,4 +1,4 @@
-import { observable, computed, action, runInAction } from 'mobx'
+import { observable, computed, action, runInAction, reaction, toJS } from 'mobx'
 import remotedev from 'mobx-remotedev/lib/dev'
 import uuid from 'uuid/v4'
 import symbols from './symbols'
@@ -13,7 +13,16 @@ export class StocksStore {
   @observable selectedId = undefined
 
   constructor() {
-    symbols.forEach(this.append.bind(this))
+    if (localStorage.stocks) {
+      this.stocks.replace(JSON.parse(localStorage.stocks))
+    }
+
+    reaction(
+      () => this.stocks.slice(),
+      stocks => {
+        localStorage.setItem('stocks', JSON.stringify(toJS(stocks)))
+      }
+    )
   }
 
   @computed get selected() {
@@ -29,7 +38,7 @@ export class StocksStore {
   @action append(symbol) {
     if (!this.stocks.map(t => t.symbol).includes(symbol)) {
       this.stocks.push({ id: uuid(), symbol, history: [], news: [] })
-    }  
+    }
   }
 
   @action remove(id) {
